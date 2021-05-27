@@ -6,8 +6,6 @@ class CreateCategoryUseCase {
   constructor(private categoriesRepository: CategoriesRepository) {}
 
   public execute({ name, description }: ICreateCategoryDTO): Category {
-    console.log('USE CASE');
-
     const categoryAlreadyExists = this.categoriesRepository.findByName(name);
 
     if (categoryAlreadyExists) {

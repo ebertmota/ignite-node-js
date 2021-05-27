@@ -3,7 +3,7 @@ import { Category } from '../model/Category';
 
 interface ICategoriesRepository {
   findByName(name: string): Category | undefined;
-  index(): Category[];
+  list(): Category[];
   create(data: ICreateCategoryDTO): void;
 }
 
