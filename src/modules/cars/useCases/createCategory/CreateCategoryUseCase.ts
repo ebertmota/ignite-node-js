@@ -1,12 +1,23 @@
+import { Categories } from '@prisma/client';
+import { inject, injectable } from 'tsyringe';
+
 import ICreateCategoryDTO from '../../dtos/ICreateCategoryDTO';
-import { Category } from '../../model/Category';
-import { CategoriesRepository } from '../../repositories/CategoriesRepository';
+import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
 
+@injectable()
 class CreateCategoryUseCase {
-  constructor(private categoriesRepository: CategoriesRepository) {}
+  constructor(
+    @inject('CategoriesRepository')
+    private categoriesRepository: ICategoriesRepository,
+  ) {}
 
-  public execute({ name, description }: ICreateCategoryDTO): Category {
-    const categoryAlreadyExists = this.categoriesRepository.findByName(name);
+  public async execute({
+    name,
+    description,
+  }: ICreateCategoryDTO): Promise<Categories> {
+    const categoryAlreadyExists = await this.categoriesRepository.findByName(
+      name,
+    );
 
     if (categoryAlreadyExists) {
       throw new Error('Category already exists');

@@ -1,10 +1,11 @@
+import 'reflect-metadata';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 
+import './shared/container';
+import 'dotenv/config';
 import { router } from './modules/cars/routes';
 import swaggerConfig from './swagger.json';
-
-import './database';
 
 const app = express();
 

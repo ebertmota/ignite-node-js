@@ -1,11 +1,17 @@
-import { Category } from '../../model/Category';
-import { CategoriesRepository } from '../../repositories/CategoriesRepository';
+import { Categories } from '@prisma/client';
+import { inject, injectable } from 'tsyringe';
 
+import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
+
+@injectable()
 class ListCategoriesUseCase {
-  constructor(private categoriesRepository: CategoriesRepository) {}
+  constructor(
+    @inject('CategoriesRepository')
+    private categoriesRepository: ICategoriesRepository,
+  ) {}
 
-  execute(): Category[] {
-    const categories = this.categoriesRepository.list();
+  public async execute(): Promise<Categories[]> {
+    const categories = await this.categoriesRepository.list();
 
     return categories;
   }

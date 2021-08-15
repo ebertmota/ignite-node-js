@@ -1,10 +1,11 @@
+import { Categories } from '@prisma/client';
+
 import ICreateCategoryDTO from '../dtos/ICreateCategoryDTO';
-import { Category } from '../model/Category';
 
 interface ICategoriesRepository {
-  findByName(name: string): Category | undefined;
-  list(): Category[];
-  create(data: ICreateCategoryDTO): void;
+  findByName(name: string): Promise<Categories | undefined>;
+  list(): Promise<Categories[]>;
+  create(data: ICreateCategoryDTO): Promise<Categories>;
 }
 
 export { ICategoriesRepository };
