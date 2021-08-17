@@ -1,24 +1,30 @@
-import { Specification } from '../../model/Specification';
+import { Specifications } from '@prisma/client';
+import { inject, injectable } from 'tsyringe';
+
 import {
   ICreateSpecificationDTO,
   ISpecificationsRepository,
 } from '../../repositories/ISpecificationsRepository';
 
+@injectable()
 class CreateSpecificationUseCase {
-  constructor(private specificationsRepository: ISpecificationsRepository) {}
+  constructor(
+    @inject('SpecificationsRepository')
+    private specificationsRepository: ISpecificationsRepository,
+  ) {}
 
-  public execute({
+  public async execute({
     name,
     description,
-  }: ICreateSpecificationDTO): Specification {
+  }: ICreateSpecificationDTO): Promise<Specifications> {
     const specificationAlreadyExists =
-      this.specificationsRepository.findByName(name);
+      await this.specificationsRepository.findByName(name);
 
     if (specificationAlreadyExists) {
       throw new Error('Specification already exists');
     }
 
-    const specification = this.specificationsRepository.create({
+    const specification = await this.specificationsRepository.create({
       name,
       description,
     });

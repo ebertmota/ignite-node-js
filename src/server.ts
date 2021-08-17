@@ -8,7 +8,6 @@ import { router } from './modules/cars/routes';
 import swaggerConfig from './swagger.json';
 
 const app = express();
-
 app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerConfig));
 

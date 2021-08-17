@@ -1,4 +1,4 @@
-import { Specification } from '../model/Specification';
+import { Specifications } from '@prisma/client';
 
 interface ICreateSpecificationDTO {
   name: string;
@@ -6,8 +6,8 @@ interface ICreateSpecificationDTO {
 }
 
 interface ISpecificationsRepository {
-  create(data: ICreateSpecificationDTO): Specification;
-  findByName(name: string): Specification | undefined;
+  create(data: ICreateSpecificationDTO): Promise<Specifications>;
+  findByName(name: string): Promise<Specifications | null>;
 }
 
 export { ISpecificationsRepository, ICreateSpecificationDTO };
