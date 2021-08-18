@@ -1,4 +1,4 @@
-import { PrismaClient, Specifications } from '@prisma/client';
+import { PrismaClient, Specification } from '@prisma/client';
 
 import {
   ICreateSpecificationDTO,
@@ -8,12 +8,12 @@ import {
 class SpecificationsRepository implements ISpecificationsRepository {
   private prisma = new PrismaClient();
 
-  private repository = this.prisma.specifications;
+  private repository = this.prisma.specification;
 
   public async create({
     name,
     description,
-  }: ICreateSpecificationDTO): Promise<Specifications> {
+  }: ICreateSpecificationDTO): Promise<Specification> {
     const specification = await this.repository.create({
       data: {
         name,
@@ -24,7 +24,7 @@ class SpecificationsRepository implements ISpecificationsRepository {
     return specification;
   }
 
-  public async findByName(name: string): Promise<Specifications | null> {
+  public async findByName(name: string): Promise<Specification | null> {
     const specification = await this.repository.findFirst({
       where: {
         name,

@@ -1,4 +1,4 @@
-import { Categories } from '@prisma/client';
+import { Category } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
 import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
@@ -10,7 +10,7 @@ class ListCategoriesUseCase {
     private categoriesRepository: ICategoriesRepository,
   ) {}
 
-  public async execute(): Promise<Categories[]> {
+  public async execute(): Promise<Category[]> {
     const categories = await this.categoriesRepository.list();
 
     return categories;

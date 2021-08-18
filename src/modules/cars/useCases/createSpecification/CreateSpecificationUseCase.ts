@@ -1,4 +1,4 @@
-import { Specifications } from '@prisma/client';
+import { Specification } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
 import {
@@ -16,7 +16,7 @@ class CreateSpecificationUseCase {
   public async execute({
     name,
     description,
-  }: ICreateSpecificationDTO): Promise<Specifications> {
+  }: ICreateSpecificationDTO): Promise<Specification> {
     const specificationAlreadyExists =
       await this.specificationsRepository.findByName(name);
 

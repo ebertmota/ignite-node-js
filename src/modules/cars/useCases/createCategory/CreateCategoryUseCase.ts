@@ -1,4 +1,4 @@
-import { Categories } from '@prisma/client';
+import { Category } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
 import ICreateCategoryDTO from '../../dtos/ICreateCategoryDTO';
@@ -14,7 +14,7 @@ class CreateCategoryUseCase {
   public async execute({
     name,
     description,
-  }: ICreateCategoryDTO): Promise<Categories> {
+  }: ICreateCategoryDTO): Promise<Category> {
     const categoryAlreadyExists = await this.categoriesRepository.findByName(
       name,
     );
