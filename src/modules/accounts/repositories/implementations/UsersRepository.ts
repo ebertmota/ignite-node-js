@@ -26,10 +26,35 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
+  public async update(userData: User): Promise<User> {
+    const user = await this.repository.update({
+      where: {
+        id: userData.id,
+      },
+      data: {
+        ...userData,
+      },
+    });
+
+    return user;
+  }
+
   public async findByEmail(email: string): Promise<User | undefined> {
     const user = await this.repository.findFirst({
       where: {
         email,
+      },
+    });
+
+    if (!user) return undefined;
+
+    return user;
+  }
+
+  public async findById(user_id: string): Promise<User | undefined> {
+    const user = await this.repository.findFirst({
+      where: {
+        id: user_id,
       },
     });
 
