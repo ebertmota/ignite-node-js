@@ -16,6 +16,8 @@ model Category {
   description String
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+
+  @@map("categories")
 }
 
 model Specification {
@@ -24,6 +26,8 @@ model Specification {
   description String
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+
+  @@map("specifications")
 }
 
 model User {
@@ -36,4 +40,6 @@ model User {
   isAdmin        Boolean  @default(false)
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
+
+  @@map("users")
 }
