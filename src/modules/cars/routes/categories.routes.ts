@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 
-import { ensureAuthenticated } from '../../../middlewares/ensureAuthenticated';
+import { ensureAuthenticated } from '../../../shared/infra/http/middlewares/ensureAuthenticated';
 import { CreateCategoryController } from '../useCases/createCategory/CreateCategoryController';
 import { ImportCategoryController } from '../useCases/importCategory/ImportCategoryController';
 import { ListCategoriesController } from '../useCases/listCategories/ListCategoriesController';
