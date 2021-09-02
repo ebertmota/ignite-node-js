@@ -1,4 +1,5 @@
 import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO';
+import { IFindAvailableCarsDTO } from '@modules/cars/dtos/IFindAvailableCarsDTO';
 import { ICarsRepositories } from '@modules/cars/repositories/ICarsRepository';
 import { PrismaClient, Category, Car } from '@prisma/client';
 
@@ -31,6 +32,27 @@ class CarsRepository implements ICarsRepositories {
         description,
         daily_rate,
         category_id,
+      },
+    });
+
+    return car;
+  }
+
+  public async findAvailable({
+    name,
+    brand,
+    category_id,
+  }: IFindAvailableCarsDTO): Promise<Car[]> {
+    const car = await this.repository.findMany({
+      where: {
+        available: true,
+        name: name
+          ? {
+              contains: name,
+            }
+          : undefined,
+        brand: brand || undefined,
+        category_id: category_id || undefined,
       },
     });
 

@@ -1,4 +1,5 @@
 import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO';
+import { IFindAvailableCarsDTO } from '@modules/cars/dtos/IFindAvailableCarsDTO';
 import { v4 as uuid } from 'uuid';
 
 import { Car } from '.prisma/client';
@@ -42,6 +43,34 @@ class CarsRepositoryInMemory implements ICarsRepositories {
     const car = this.cars.find(car => car.license_plate === license_plate);
 
     return car;
+  }
+
+  public async findAvailable({
+    brand,
+    category_id,
+    name,
+  }: IFindAvailableCarsDTO): Promise<Car[]> {
+    const all = this.cars.filter(car => {
+      if (car.available) {
+        if (brand) {
+          return car.brand === brand;
+        }
+
+        if (category_id) {
+          return car.category_id === category_id;
+        }
+
+        if (name) {
+          return car.name === name;
+        }
+
+        return car;
+      }
+
+      return null;
+    });
+
+    return all;
   }
 }
 
