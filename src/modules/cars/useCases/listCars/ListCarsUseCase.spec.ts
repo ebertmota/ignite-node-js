@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { CarsRepositoryInMemory } from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory';
 
 import { ListCarsUseCase } from './ListCarsUseCase';

@@ -1,14 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialActions"]
+}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialActions"]
 }
 
 model Category {
@@ -17,17 +14,18 @@ model Category {
   description String
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+  Car         Car[]
 
-  Car Car[]
   @@map("categories")
 }
 
 model Specification {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id               String             @id @default(uuid())
+  name             String
+  description      String
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @updatedAt
+  CarSpecification CarSpecification[]
 
   @@map("specifications")
 }
@@ -47,18 +45,31 @@ model User {
 }
 
 model Car {
-  id            String    @id @default(uuid())
-  name          String
-  description   String
-  daily_rate    Int
-  available     Boolean   @default(true)
-  license_plate String
-  fine_amount   Int
-  brand         String
-  category_id   String?
-  category      Category? @relation(fields: [category_id], references: [id], onUpdate: Cascade, onDelete: SetNull)
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
+  id             String             @id @default(uuid())
+  name           String
+  description    String
+  daily_rate     Int
+  available      Boolean            @default(true)
+  license_plate  String
+  fine_amount    Int
+  brand          String
+  category_id    String?
+  created_at     DateTime           @default(now())
+  updated_at     DateTime           @updatedAt
+  category       Category?          @relation(fields: [category_id], references: [id])
+  specifications CarSpecification[]
 
   @@map("cars")
+}
+
+model CarSpecification {
+  id               String        @id @default(uuid())
+  car_id           String
+  specification_id String
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @updatedAt
+  car              Car           @relation(fields: [car_id], references: [id], onDelete: SetNull)
+  specification    Specification @relation(fields: [specification_id], references: [id], onDelete: SetNull)
+
+  @@map("car_specifications")
 }

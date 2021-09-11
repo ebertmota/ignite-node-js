@@ -1,5 +1,8 @@
 import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO';
+import { ICreateCarSpecificationDTO } from '@modules/cars/dtos/ICreateCarSpecificationDTO';
 import { IFindAvailableCarsDTO } from '@modules/cars/dtos/IFindAvailableCarsDTO';
+import { CarWithSpecifications } from '@modules/cars/infra/prisma/types/Cars';
+import { CarSpecification } from '@prisma/client';
 import { v4 as uuid } from 'uuid';
 
 import { Car } from '.prisma/client';
@@ -7,7 +10,20 @@ import { Car } from '.prisma/client';
 import { ICarsRepositories } from '../ICarsRepository';
 
 class CarsRepositoryInMemory implements ICarsRepositories {
-  private cars: Car[] = [];
+  private cars: CarWithSpecifications[] = [];
+
+  public async createSpecifications(
+    data: ICreateCarSpecificationDTO[],
+  ): Promise<void> {
+    const carIndex = this.cars.findIndex(car => car.id === data[0].car_id);
+    const car = this.cars.find(
+      car => car.id === data[0].car_id,
+    ) as CarWithSpecifications;
+
+    car.specifications = data as CarSpecification[];
+
+    this.cars[carIndex] = car;
+  }
 
   public async create({
     name,
@@ -30,11 +46,20 @@ class CarsRepositoryInMemory implements ICarsRepositories {
       license_plate,
       created_at: new Date(),
       updated_at: new Date(),
+      specifications: [],
     };
 
     this.cars.push(car);
 
     return car;
+  }
+
+  public async update(data: CarWithSpecifications): Promise<Car> {
+    const findIndex = this.cars.findIndex(car => car.id === data.id);
+
+    this.cars[findIndex] = data;
+
+    return data;
   }
 
   public async findByLicensePlate(
@@ -71,6 +96,12 @@ class CarsRepositoryInMemory implements ICarsRepositories {
     });
 
     return all;
+  }
+
+  public async findById(
+    id: string,
+  ): Promise<CarWithSpecifications | undefined> {
+    return this.cars.find(car => car.id === id);
   }
 }
 

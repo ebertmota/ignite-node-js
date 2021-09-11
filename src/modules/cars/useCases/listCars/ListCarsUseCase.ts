@@ -1,9 +1,14 @@
 import { IFindAvailableCarsDTO } from '@modules/cars/dtos/IFindAvailableCarsDTO';
 import { ICarsRepositories } from '@modules/cars/repositories/ICarsRepository';
 import { Car } from '@prisma/client';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 class ListCarsUseCase {
-  constructor(private carsRepository: ICarsRepositories) {}
+  constructor(
+    @inject('CarsRepository')
+    private carsRepository: ICarsRepositories,
+  ) {}
   public async execute({
     category_id,
     brand,

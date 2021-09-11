@@ -1,17 +1,45 @@
 import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO';
+import { ICreateCarSpecificationDTO } from '@modules/cars/dtos/ICreateCarSpecificationDTO';
 import { IFindAvailableCarsDTO } from '@modules/cars/dtos/IFindAvailableCarsDTO';
 import { ICarsRepositories } from '@modules/cars/repositories/ICarsRepository';
 import { PrismaClient, Category, Car } from '@prisma/client';
+
+import { optional } from '@shared/utils/prisma';
+
+import { CarWithSpecifications } from '../types/Cars';
 
 class CarsRepository implements ICarsRepositories {
   private prisma = new PrismaClient();
 
   private repository = this.prisma.car;
 
+  public async createSpecifications(
+    data: ICreateCarSpecificationDTO[],
+  ): Promise<void> {
+    await this.prisma.carSpecification.createMany({
+      data,
+    });
+  }
+
   public async list(): Promise<Category[]> {
-    const categories = await this.repository.findMany();
+    const categories = await this.repository.findMany({
+      include: {
+        specifications: true,
+      },
+    });
 
     return categories;
+  }
+
+  public async update(data: Car): Promise<Car> {
+    const car = await this.repository.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    });
+
+    return car;
   }
 
   public async create({
@@ -46,15 +74,33 @@ class CarsRepository implements ICarsRepositories {
     const car = await this.repository.findMany({
       where: {
         available: true,
-        name: name
-          ? {
-              contains: name,
-            }
-          : undefined,
-        brand: brand || undefined,
-        category_id: category_id || undefined,
+        name: optional({
+          contains: name,
+        }),
+        brand: optional(brand),
+        category_id: optional(category_id),
+      },
+      include: {
+        specifications: true,
       },
     });
+
+    return car;
+  }
+
+  public async findById(
+    id: string,
+  ): Promise<CarWithSpecifications | undefined> {
+    const car = await this.repository.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        specifications: true,
+      },
+    });
+
+    if (!car) return undefined;
 
     return car;
   }

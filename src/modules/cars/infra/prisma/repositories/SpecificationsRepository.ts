@@ -23,12 +23,26 @@ class SpecificationsRepository implements ISpecificationsRepository {
     return specification;
   }
 
-  public async findByName(name: string): Promise<Specification | null> {
+  public async findByIds(ids: string[]): Promise<Specification[]> {
+    const specifications = await this.repository.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    return specifications;
+  }
+
+  public async findByName(name: string): Promise<Specification | undefined> {
     const specification = await this.repository.findFirst({
       where: {
         name,
       },
     });
+
+    if (!specification) return undefined;
 
     return specification;
   }
