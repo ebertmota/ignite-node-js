@@ -59,7 +59,19 @@ model Car {
   category       Category?          @relation(fields: [category_id], references: [id])
   specifications CarSpecification[]
 
+  images CarImages[]
   @@map("cars")
+}
+
+model CarImages {
+  id         String   @id @default(uuid())
+  car_id     String
+  filename   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  car Car @relation(fields: [car_id], references: [id])
+  @@map("car_images")
 }
 
 model CarSpecification {

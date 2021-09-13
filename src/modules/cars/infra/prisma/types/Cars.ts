@@ -7,3 +7,9 @@ const carsWithCarSpecification = Prisma.validator<Prisma.CarArgs>()({
 export type CarWithSpecifications = Prisma.CarGetPayload<
   typeof carsWithCarSpecification
 >;
+
+const CarWithImages = Prisma.validator<Prisma.CarArgs>()({
+  include: { images: true },
+});
+
+export type CarWithImages = Prisma.CarGetPayload<typeof CarWithImages>;
