@@ -1,6 +1,6 @@
 import { ICreateCarImagesDTO } from '@modules/cars/dtos/ICreateCarImageDTO';
 import { ICarsImagesRepository } from '@modules/cars/repositories/ICarsImagesRepository';
-import { CarImages, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 class CarsImagesRepository implements ICarsImagesRepository {
   private repository;
@@ -10,12 +10,10 @@ class CarsImagesRepository implements ICarsImagesRepository {
     this.repository = prisma.carImages;
   }
 
-  public async create(data: ICreateCarImagesDTO): Promise<CarImages> {
-    const image = await this.repository.create({
+  public async createMany(data: ICreateCarImagesDTO[]): Promise<void> {
+    await this.repository.createMany({
       data,
     });
-
-    return image;
   }
 }
 

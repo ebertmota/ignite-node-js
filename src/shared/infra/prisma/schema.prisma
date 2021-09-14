@@ -41,6 +41,7 @@ model User {
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
 
+  Rentals Rentals[]
   @@map("users")
 }
 
@@ -59,7 +60,8 @@ model Car {
   category       Category?          @relation(fields: [category_id], references: [id])
   specifications CarSpecification[]
 
-  images CarImages[]
+  images  CarImages[]
+  Rentals Rentals[]
   @@map("cars")
 }
 
@@ -84,4 +86,20 @@ model CarSpecification {
   specification    Specification @relation(fields: [specification_id], references: [id], onDelete: SetNull)
 
   @@map("car_specifications")
+}
+
+model Rentals {
+  id                   String   @id @default(uuid())
+  start_date           DateTime @default(now())
+  end_date             DateTime
+  expected_return_date DateTime
+  total                Int
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+  car_id               String
+  car                  Car      @relation(fields: [car_id], references: [id])
+  user_id              String
+  user                 User     @relation(fields: [user_id], references: [id])
+
+  @@map("rentals")
 }
