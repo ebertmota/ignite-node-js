@@ -8,7 +8,11 @@ import { ICarsImagesRepository } from '@modules/cars/repositories/ICarsImagesRep
 import { ICarsRepositories } from '@modules/cars/repositories/ICarsRepository';
 import { ICategoriesRepository } from '@modules/cars/repositories/ICategoriesRepository';
 import { ISpecificationsRepository } from '@modules/cars/repositories/ISpecificationsRepository';
+import { RentalsRepository } from '@modules/rentals/infra/prisma/respositories/RentalsRepository';
+import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
 import { container } from 'tsyringe';
+
+import '@shared/container/providers';
 
 container.registerSingleton<ICategoriesRepository>(
   'CategoriesRepository',
@@ -33,4 +37,9 @@ container.registerSingleton<ICarsRepositories>(
 container.registerSingleton<ICarsImagesRepository>(
   'CarsImagesRepository',
   CarsImagesRepository,
+);
+
+container.registerSingleton<IRentalsRepository>(
+  'RentalsRepository',
+  RentalsRepository,
 );
