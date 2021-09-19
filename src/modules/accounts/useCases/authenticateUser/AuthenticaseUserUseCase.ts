@@ -29,6 +29,7 @@ class AuthenticateUserUseCase {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
+      console.log('1');
       throw new AppError('Email or password incorrect');
     }
 
@@ -40,7 +41,6 @@ class AuthenticateUserUseCase {
 
     const { secret_token } = authConfig.jwt;
 
-    console.log(passwordMatch);
     const token = sign({}, secret_token, {
       subject: user.id,
       expiresIn: '1d',

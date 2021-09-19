@@ -1,7 +1,7 @@
 import { ICreateUsersDTO } from '@modules/accounts/dtos/ICreateUserDTO';
 import { hash } from 'bcrypt';
 
-import { IPrismaClient } from '../seed';
+import { IPrismaClient } from './index';
 
 async function createAdminUser(prisma: IPrismaClient): Promise<void> {
   const adminUser: ICreateUsersDTO = {

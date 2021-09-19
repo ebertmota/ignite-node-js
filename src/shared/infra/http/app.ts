@@ -10,7 +10,11 @@ import { router } from '@shared/infra/http/routes';
 
 import swaggerConfig from '../../../swagger.json';
 
-const app = express();
+import { PrismaClient } from '.prisma/client';
+
+export const prisma = new PrismaClient();
+export const app = express();
+
 app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerConfig));
 
@@ -29,5 +33,3 @@ app.use((err: Error, _: Request, response: Response, __: NextFunction) => {
     message: `Internal server error - ${err.message}`,
   });
 });
-
-export { app };

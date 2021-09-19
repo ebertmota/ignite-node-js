@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 
-import { createAdminUser } from './seeds/Users';
+import { createAdminUser } from './Users';
 
 export type IPrismaClient = PrismaClient<
   Prisma.PrismaClientOptions,
