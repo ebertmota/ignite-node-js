@@ -3,7 +3,7 @@ import request from 'supertest';
 
 import { app, prisma } from '@shared/infra/http/app';
 
-describe('Create Category Controller', () => {
+describe('List Categories', () => {
   beforeAll(async () => {
     await prisma.$connect();
   });
@@ -16,7 +16,7 @@ describe('Create Category Controller', () => {
     await prisma.$disconnect();
   });
 
-  it('should be able to create a new category', async () => {
+  it('should be able to list categories', async () => {
     const password = 'admin123';
     const passwordHash = await hash(password, 8);
     const { email } = await prisma.user.create({
@@ -39,7 +39,7 @@ describe('Create Category Controller', () => {
 
     const { token } = adminToken.body;
 
-    const response = await request(app)
+    const { body: category } = await request(app)
       .post('/categories')
       .send({
         name: 'Category Supertest',
@@ -50,34 +50,9 @@ describe('Create Category Controller', () => {
       })
       .expect(201);
 
-    expect(response.body).toHaveProperty('id');
-  });
+    const response = await request(app).get('/categories').expect(200);
 
-  it('should not be able to create a new category with existing name', async () => {
-    const adminToken = await request(app)
-      .post('/sessions')
-      .send({
-        email: 'test@rentx.com',
-        password: 'admin123',
-      })
-      .expect(200);
-
-    const { token } = adminToken.body;
-
-    const response = await request(app)
-      .post('/categories')
-      .send({
-        name: 'Category Supertest',
-        description: 'Category Supertest',
-      })
-      .set({
-        Authorization: `Bearer ${token}`,
-      })
-      .expect(400);
-
-    expect(response.body).toStrictEqual({
-      status: 'error',
-      message: 'Category already exists',
-    });
+    expect(response.body).toHaveLength(1);
+    expect(response.body[0].id).toBe(category.id);
   });
 });
