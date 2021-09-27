@@ -1,6 +1,7 @@
 import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO';
 import { ICreateCarSpecificationDTO } from '@modules/cars/dtos/ICreateCarSpecificationDTO';
 import { IFindAvailableCarsDTO } from '@modules/cars/dtos/IFindAvailableCarsDTO';
+import { IUpdateCarAvailability } from '@modules/cars/dtos/IUpdateCarAvailability';
 import { ICarsRepositories } from '@modules/cars/repositories/ICarsRepository';
 import { PrismaClient, Category, Car } from '@prisma/client';
 
@@ -19,6 +20,22 @@ class CarsRepository implements ICarsRepositories {
     await this.prisma.carSpecification.createMany({
       data,
     });
+  }
+
+  public async updateAvailability({
+    car_id,
+    available,
+  }: IUpdateCarAvailability): Promise<Car> {
+    const car = await this.repository.update({
+      data: {
+        available,
+      },
+      where: {
+        id: car_id,
+      },
+    });
+
+    return car;
   }
 
   public async list(): Promise<Category[]> {

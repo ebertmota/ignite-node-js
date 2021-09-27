@@ -3,6 +3,7 @@ import { Car } from '@prisma/client';
 import { ICreateCarDTO } from '../dtos/ICreateCarDTO';
 import { ICreateCarSpecificationDTO } from '../dtos/ICreateCarSpecificationDTO';
 import { IFindAvailableCarsDTO } from '../dtos/IFindAvailableCarsDTO';
+import { IUpdateCarAvailability } from '../dtos/IUpdateCarAvailability';
 import { CarWithSpecifications } from '../infra/prisma/types/Cars';
 
 interface ICarsRepositories {
@@ -12,6 +13,7 @@ interface ICarsRepositories {
   findByLicensePlate(license_plate: string): Promise<Car | undefined>;
   findAvailable(data: IFindAvailableCarsDTO): Promise<Car[]>;
   findById(car_id: string): Promise<CarWithSpecifications | undefined>;
+  updateAvailability(data: IUpdateCarAvailability): Promise<Car>;
 }
 
 export { ICarsRepositories };

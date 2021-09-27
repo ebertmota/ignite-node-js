@@ -42,6 +42,18 @@ class RentalsRepository implements IRentalsRepository {
 
     return rental;
   }
+
+  public async findById(id: string): Promise<Rental | undefined> {
+    const rental = await this.repository.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!rental) return undefined;
+
+    return rental;
+  }
 }
 
 export { RentalsRepository };

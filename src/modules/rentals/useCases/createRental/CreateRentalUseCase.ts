@@ -1,3 +1,4 @@
+import { ICarsRepositories } from '@modules/cars/repositories/ICarsRepository';
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
 import { Rental } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
@@ -16,6 +17,9 @@ class CreateRentalUseCase {
   constructor(
     @inject('RentalsRepository')
     private rentalsRepository: IRentalsRepository,
+
+    @inject('CarsRepository')
+    private carsRepository: ICarsRepositories,
 
     @inject('DateProvider')
     private dateProvider: IDateProvider,
@@ -55,6 +59,11 @@ class CreateRentalUseCase {
       user_id,
       car_id,
       expected_return_date,
+    });
+
+    await this.carsRepository.updateAvailability({
+      car_id,
+      available: false,
     });
 
     return rental;
