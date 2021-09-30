@@ -54,6 +54,17 @@ class RentalsRepository implements IRentalsRepository {
 
     return rental;
   }
+
+  public async update(data: Rental): Promise<Rental> {
+    const rental = await this.repository.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    });
+
+    return rental;
+  }
 }
 
 export { RentalsRepository };
