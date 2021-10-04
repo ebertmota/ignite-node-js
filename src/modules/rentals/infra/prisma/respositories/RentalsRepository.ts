@@ -17,6 +17,7 @@ class RentalsRepository implements IRentalsRepository {
     const rental = await this.repository.findFirst({
       where: {
         car_id,
+        end_date: null,
       },
     });
 
@@ -28,6 +29,7 @@ class RentalsRepository implements IRentalsRepository {
     const rental = await this.repository.findFirst({
       where: {
         user_id,
+        end_date: null,
       },
     });
 
@@ -35,6 +37,17 @@ class RentalsRepository implements IRentalsRepository {
 
     return rental;
   }
+
+  public async findByUserId(user_id: string): Promise<Rental[]> {
+    const rental = await this.repository.findMany({
+      where: {
+        user_id,
+      },
+    });
+
+    return rental;
+  }
+
   public async create(data: ICreateRentalDTO): Promise<Rental> {
     const rental = await this.repository.create({
       data,

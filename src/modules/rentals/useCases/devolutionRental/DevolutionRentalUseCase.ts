@@ -9,6 +9,7 @@ import { Rental } from '.prisma/client';
 
 interface IRequest {
   id: string;
+  user_id: string;
 }
 
 @injectable()
